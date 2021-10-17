@@ -1,9 +1,8 @@
-package main.java.com.ampp8800.pizzeria;
+package com.ampp8800.pizzeria;
 
 public class OrderGenerator extends Thread{
 
-    final int THE_NUMBER_OF_ORDERS = 11;
-    private static int currentOrder = 0;
+    final static int THE_NUMBER_OF_ORDERS = 11;
     private static int orderQuantity = 0;
 
 
@@ -22,23 +21,23 @@ public class OrderGenerator extends Thread{
     }
 
 
-    public synchronized Order generationOfOrders() throws InterruptedException {
+    private Order generationOfOrders() throws InterruptedException {
 
         int rouletteTime = ((int) (Math.random() * 7) + 3);
         Order order;
         Thread.sleep(rouletteTime * 1000);
         int rouletteFood = (int) (Math.random() * 3);
         synchronized (this) {
-            currentOrder++;
+
             switch (rouletteFood) {
                 case 0:
-                    order = new Order(currentOrder, Food.Pizza.PEPPERONI);
+                    order = new Order(Food.Pizza.PEPPERONI);
                     break;
                 case 1:
-                    order = new Order(currentOrder, Food.Pizza.HAM_AND_MUSHROOMS);
+                    order = new Order(Food.Pizza.HAM_AND_MUSHROOMS);
                     break;
                 default:
-                    order = new Order(currentOrder, Food.Pizza.MARGARITA);
+                    order = new Order(Food.Pizza.MARGARITA);
                     break;
             }
         }

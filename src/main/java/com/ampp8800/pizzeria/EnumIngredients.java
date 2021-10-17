@@ -1,4 +1,4 @@
-package main.java.com.ampp8800.pizzeria;
+package com.ampp8800.pizzeria;
 
 public class EnumIngredients {
     enum Ingredients {
