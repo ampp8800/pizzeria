@@ -1,25 +1,23 @@
 package com.ampp8800.pizzeria;
 
-public class OrderGenerator extends Thread{
+import java.util.concurrent.atomic.AtomicInteger;
 
-    final static int THE_NUMBER_OF_ORDERS = 11;
-    private static int orderQuantity = 0;
+public class OrderGenerator extends Thread {
 
-
+    private static AtomicInteger orderQuantity = new AtomicInteger(0);
+    private static AtomicInteger currentNumber = new AtomicInteger(0);
 
     @Override
     public void run() {
-        while (orderQuantity < THE_NUMBER_OF_ORDERS) {
+        OrderQueueWrapper orderQueueWrapper = OrderQueueWrapper.getInstance();
+        while (orderQuantity.getAndIncrement() < orderQueueWrapper.THE_NUMBER_OF_ORDERS) {
             try {
-                orderQuantity++;
-                OrderLog.addNewOrder(generationOfOrders());
-
+                orderQueueWrapper.addNewOrder(generationOfOrders());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-
 
     private Order generationOfOrders() throws InterruptedException {
 
@@ -28,22 +26,18 @@ public class OrderGenerator extends Thread{
         Thread.sleep(rouletteTime * 1000);
         int rouletteFood = (int) (Math.random() * 3);
         synchronized (this) {
-
             switch (rouletteFood) {
                 case 0:
-                    order = new Order(Food.Pizza.PEPPERONI);
+                    order = new Order(currentNumber.incrementAndGet(), Food.Pizza.PEPPERONI);
                     break;
                 case 1:
-                    order = new Order(Food.Pizza.HAM_AND_MUSHROOMS);
+                    order = new Order(currentNumber.incrementAndGet(), Food.Pizza.HAM_AND_MUSHROOMS);
                     break;
                 default:
-                    order = new Order(Food.Pizza.MARGARITA);
+                    order = new Order(currentNumber.incrementAndGet(), Food.Pizza.MARGARITA);
                     break;
             }
         }
-
         return order;
-
-
     }
 }
