@@ -7,10 +7,6 @@ public class Pizzeria {
         orderQueueWrapper.printTotalOrders();
         OrderGenerator orderGenerator = new OrderGenerator();
         orderGenerator.start();
-//        OrderGenerator orderGenerator1 = new OrderGenerator();
-//        orderGenerator1.start();
-//        OrderGenerator orderGenerator2 = new OrderGenerator();
-//        orderGenerator2.start();
 
     }
 }
