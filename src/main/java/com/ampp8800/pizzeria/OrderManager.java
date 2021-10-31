@@ -46,7 +46,7 @@ public class OrderManager {
 
         for (EnumIngredients.Ingredients ingredient : ingredients) {
             if (ingredientInStock.get(ingredient) == 0) {
-                 return false;
+                return false;
             }
         }
         return true;

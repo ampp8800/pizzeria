@@ -31,7 +31,7 @@ public class ProgramsMethods {
     public static String getPizzaComposition(EnumIngredients.Ingredients[] ingredients) {
         String result = "composition: ";
         for (EnumIngredients.Ingredients ingredient : ingredients) {
-            result += ingredient +", ";
+            result += ingredient + ", ";
         }
         return result;
     }

@@ -7,7 +7,8 @@ public class CompletedOrdersJournal {
     private HashSet<Order> completedOrders = new HashSet<>();
     private Map<Integer, Queue<EnumIngredients.Ingredients>> incompleteOrders = new HashMap<>();
 
-    private CompletedOrdersJournal() {}
+    private CompletedOrdersJournal() {
+    }
 
     public static CompletedOrdersJournal getInstance() {
         if (completedOrdersJournal == null) {
@@ -20,7 +21,7 @@ public class CompletedOrdersJournal {
         completedOrders.add(order);
     }
 
-    public void  notEnoughIngredientInOrder(Order order, EnumIngredients.Ingredients ingredient) {
+    public void notEnoughIngredientInOrder(Order order, EnumIngredients.Ingredients ingredient) {
         Queue<EnumIngredients.Ingredients> queue = new LinkedList<>();
         if (incompleteOrders.containsKey(order.getOrderNumber())) {
             queue = incompleteOrders.get(order.getOrderNumber());

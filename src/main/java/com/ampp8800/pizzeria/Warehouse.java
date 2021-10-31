@@ -11,7 +11,7 @@ public class Warehouse {
     }
 
     public static Warehouse getInstance() {
-        if (warehouse == null){
+        if (warehouse == null) {
             warehouse = new Warehouse();
         }
         return warehouse;
@@ -33,8 +33,6 @@ public class Warehouse {
         ingredientsInStock.put(EnumIngredients.Ingredients.SAUSAGE, 10);
         ingredientsInStock.put(EnumIngredients.Ingredients.TOMATO, 10);
     }
-
-
 
 
 }
