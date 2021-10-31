@@ -24,5 +24,8 @@ public class Food {
             return ingredients;
         }
 
+        public String getFood() {
+            return food;
+        }
     }
 }
