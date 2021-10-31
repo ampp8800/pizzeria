@@ -6,9 +6,9 @@ public class OrderGenerator extends Thread {
 
     private static AtomicInteger ordersInProcessOfGeneration = new AtomicInteger(0);
 
-
     @Override
     public void run() {
+        ProgramsMethods.addedOrderGenerator();
         OrderQueueWrapper orderQueueWrapper = OrderQueueWrapper.getInstance();
         while (ordersInProcessOfGeneration.getAndIncrement() < OrderQueueWrapper.THE_NUMBER_OF_ORDERS) {
             try {
@@ -17,6 +17,7 @@ public class OrderGenerator extends Thread {
                 e.printStackTrace();
             }
         }
+        ProgramsMethods.generationOfOrdersCompleted();
     }
 
     private Order generationOfOrders() throws InterruptedException {
