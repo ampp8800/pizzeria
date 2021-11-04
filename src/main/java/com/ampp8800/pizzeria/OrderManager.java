@@ -1,8 +1,6 @@
 package com.ampp8800.pizzeria;
 
 import java.util.Date;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Map;
 
 public class OrderManager {
@@ -20,29 +18,18 @@ public class OrderManager {
 
     public synchronized Order takeQueue(int MAXIMUM_QUEUE_TIME) {
         synchronized (orderQueueWrapper) {
-            Deque<Order> unavailableOrders = new LinkedList<>();
-            Order order = null;
-            boolean orderTakenFromQueue = false;
-            while (!orderTakenFromQueue) {
-                if (null != orderQueueWrapper.getQueueOrder().peekFirst()) {
-                    order = orderQueueWrapper.getQueueOrder().removeFirst();
-                    orderTakenFromQueue = checkIngredientInStock(order);
-                    if ((new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME) {
-                        orderTakenFromQueue = true;
-                    }
-                    if (orderTakenFromQueue) {
-                        pickUpIngredientsFromWarehouse(order);
-                        completedOrdersJournal.addNewOrder(order);
-                    } else {
-                        unavailableOrders.addLast(order);
-                    }
-                } else {
-                    orderTakenFromQueue = true;
-                    order = null;
+            Order order = orderQueueWrapper.getQueueOrder().peekFirst();
+            boolean orderIsAvailableForExecution;
+            if (null != order) {
+                orderIsAvailableForExecution = checkIngredientInStock(order);
+                if ((new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME) {
+                    orderIsAvailableForExecution = true;
                 }
-            }
-            while (null != unavailableOrders.peekLast()) {
-                orderQueueWrapper.getQueueOrder().addFirst(unavailableOrders.removeLast());
+                if (orderIsAvailableForExecution) {
+                    order = orderQueueWrapper.getQueueOrder().removeFirst();
+                    pickUpIngredientsFromWarehouse(order);
+                    completedOrdersJournal.addNewOrder(order);
+                }
             }
             return order;
         }

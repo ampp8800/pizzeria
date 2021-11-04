@@ -3,11 +3,11 @@ package com.ampp8800.pizzeria;
 public class Cook extends Thread {
     private OrderManager orderManager = OrderManager.getInstance();
     private CompletedOrdersJournal completedOrdersJournal = CompletedOrdersJournal.getInstance();
-    private final static int TIME_OF_ORDER_SELECTION = 10000;
-    private final static int MAXIMUM_QUEUE_TIME = 360000;
-    private final static int COOKING_TIME = 60000;
+    private final static int TIME_OF_ORDER_SELECTION = 5000;
+    private final static int MAXIMUM_QUEUE_TIME = 30000;
+    private final static int COOKING_TIME = 10000;
     private final static int TIME_TO_RECHECK_QUEUE = 10000;
-    Order order;
+    private Order order;
 
     @Override
     public void run() {
