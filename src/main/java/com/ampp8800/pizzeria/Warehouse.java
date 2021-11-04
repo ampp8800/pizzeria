@@ -10,7 +10,7 @@ public class Warehouse {
     private Warehouse() {
     }
 
-    public static Warehouse getInstance() {
+    public static synchronized Warehouse getInstance() {
         if (warehouse == null) {
             warehouse = new Warehouse();
         }
@@ -27,7 +27,7 @@ public class Warehouse {
 
     public void fillWithIngredients() {
         ingredientsInStock.put(EnumIngredients.Ingredients.CHEESE, 10);
-        ingredientsInStock.put(EnumIngredients.Ingredients.HAM, 0);
+        ingredientsInStock.put(EnumIngredients.Ingredients.HAM, 10);
         ingredientsInStock.put(EnumIngredients.Ingredients.DOUGH, 10);
         ingredientsInStock.put(EnumIngredients.Ingredients.MUSHROOM, 10);
         ingredientsInStock.put(EnumIngredients.Ingredients.SAUSAGE, 10);

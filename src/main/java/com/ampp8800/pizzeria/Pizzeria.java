@@ -4,7 +4,7 @@ public class Pizzeria {
     final static int NUMBER_OF_COOKS = 3;
 
     public static void main(String[] args) {
-        ProgramsMethods.printTotalOrders();
+        Utils.printTotalOrders();
 
         Warehouse warehouse = Warehouse.getInstance();
         warehouse.fillWithIngredients();

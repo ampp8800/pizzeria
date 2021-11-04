@@ -31,8 +31,8 @@ public class OrderQueueWrapper {
 
 
     public void printOrder(Order order) {
-        System.out.println(ProgramsMethods.currentDate() + "Add order #" + order.getOrderNumber() + " " + order.getFood() + " " + order.getDate());
-        System.out.println(ProgramsMethods.currentDate() + "Orders in the queue " + queueOrder);
+        System.out.println(Utils.currentDate() + "Add order #" + order.getOrderNumber() + " " + order.getFood() + " " + order.getDate());
+        System.out.println(Utils.currentDate() + "Orders in the queue " + queueOrder);
     }
 
 }

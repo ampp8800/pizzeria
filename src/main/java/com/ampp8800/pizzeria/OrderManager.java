@@ -6,9 +6,17 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class OrderManager {
+    private static OrderManager orderManager;
     private OrderQueueWrapper orderQueueWrapper = OrderQueueWrapper.getInstance();
     private Warehouse warehouse = Warehouse.getInstance();
     private CompletedOrdersJournal completedOrdersJournal = CompletedOrdersJournal.getInstance();
+
+    public static OrderManager getInstance() {
+        if (orderManager == null) {
+            orderManager = new OrderManager();
+        }
+        return orderManager;
+    }
 
     public synchronized Order takeQueue(int MAXIMUM_QUEUE_TIME) {
         synchronized (orderQueueWrapper) {
@@ -19,7 +27,7 @@ public class OrderManager {
                 if (null != orderQueueWrapper.getQueueOrder().peekFirst()) {
                     order = orderQueueWrapper.getQueueOrder().removeFirst();
                     orderTakenFromQueue = checkIngredientInStock(order);
-                    if ((new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME * 1000) {
+                    if ((new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME) {
                         orderTakenFromQueue = true;
                     }
                     if (orderTakenFromQueue) {
@@ -66,6 +74,14 @@ public class OrderManager {
             }
         }
         warehouse.setIngredientsInStock(ingredientInStock);
+    }
+
+    public static String getPizzaComposition(EnumIngredients.Ingredients[] ingredients) {
+        String result = "composition: ";
+        for (EnumIngredients.Ingredients ingredient : ingredients) {
+            result += ingredient + ", ";
+        }
+        return result;
     }
 
 }

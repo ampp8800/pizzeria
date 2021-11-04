@@ -8,7 +8,7 @@ public class OrderGenerator extends Thread {
 
     @Override
     public void run() {
-        ProgramsMethods.addedOrderGenerator();
+        Utils.addedOrderGenerator();
         OrderQueueWrapper orderQueueWrapper = OrderQueueWrapper.getInstance();
         while (ordersInProcessOfGeneration.getAndIncrement() < OrderQueueWrapper.THE_NUMBER_OF_ORDERS) {
             try {
@@ -17,14 +17,14 @@ public class OrderGenerator extends Thread {
                 e.printStackTrace();
             }
         }
-        ProgramsMethods.generationOfOrdersCompleted();
+        Utils.generationOfOrdersCompleted();
     }
 
     private Order generationOfOrders() throws InterruptedException {
 
-        int rouletteTime = ((int) (Math.random() * 7) + 3);
+        int rouletteTime = ((int) (Math.random() * 7) + 3000);
         Order order;
-        Thread.sleep(rouletteTime * 1000);
+        Thread.sleep(rouletteTime);
         int rouletteFood = (int) (Math.random() * 3);
 
         switch (rouletteFood) {

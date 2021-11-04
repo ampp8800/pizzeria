@@ -10,7 +10,7 @@ public class CompletedOrdersJournal {
     private CompletedOrdersJournal() {
     }
 
-    public static CompletedOrdersJournal getInstance() {
+    public static synchronized CompletedOrdersJournal getInstance() {
         if (completedOrdersJournal == null) {
             completedOrdersJournal = new CompletedOrdersJournal();
         }

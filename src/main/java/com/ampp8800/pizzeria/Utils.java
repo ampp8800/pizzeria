@@ -3,7 +3,7 @@ package com.ampp8800.pizzeria;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ProgramsMethods {
+public class Utils {
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("[dd/MM/yyyy HH:mm:ss] ");
     private static int numberOfOrderGenerators = 0;
 
@@ -12,11 +12,11 @@ public class ProgramsMethods {
     }
 
     public static void addedOrderGenerator() {
-        ++ProgramsMethods.numberOfOrderGenerators;
+        ++Utils.numberOfOrderGenerators;
     }
 
     public static void generationOfOrdersCompleted() {
-        --ProgramsMethods.numberOfOrderGenerators;
+        --Utils.numberOfOrderGenerators;
     }
 
     public static void printTotalOrders() {
@@ -28,11 +28,4 @@ public class ProgramsMethods {
         return dateFormat.format(date);
     }
 
-    public static String getPizzaComposition(EnumIngredients.Ingredients[] ingredients) {
-        String result = "composition: ";
-        for (EnumIngredients.Ingredients ingredient : ingredients) {
-            result += ingredient + ", ";
-        }
-        return result;
-    }
 }

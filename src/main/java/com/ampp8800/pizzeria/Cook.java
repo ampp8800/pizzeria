@@ -1,38 +1,40 @@
 package com.ampp8800.pizzeria;
 
 public class Cook extends Thread {
-    private OrderManager orderManager = new OrderManager();
+    private OrderManager orderManager = OrderManager.getInstance();
     private CompletedOrdersJournal completedOrdersJournal = CompletedOrdersJournal.getInstance();
-    final static int TIME_OF_ORDER_SELECTION = 10;
-    final static int MAXIMUM_QUEUE_TIME = 360;
-    final static int COOKING_TIME = 60;
-    final static int TIME_TO_RECHECK_QUEUE = 10;
+    private final static int TIME_OF_ORDER_SELECTION = 10000;
+    private final static int MAXIMUM_QUEUE_TIME = 360000;
+    private final static int COOKING_TIME = 60000;
+    private final static int TIME_TO_RECHECK_QUEUE = 10000;
     Order order;
 
     @Override
     public void run() {
-        while ((ProgramsMethods.getNumberOfOrderGenerators() != 0) || (null != OrderQueueWrapper.getInstance().getQueueOrder().peekFirst())) {
+        while ((Utils.getNumberOfOrderGenerators() != 0) || (null != OrderQueueWrapper.getInstance().getQueueOrder().peekFirst())) {
             try {
-                Thread.sleep(TIME_OF_ORDER_SELECTION * 1000);
+                Thread.sleep(TIME_OF_ORDER_SELECTION);
                 order = orderManager.takeQueue(MAXIMUM_QUEUE_TIME);
-                if (null != order) {
+                if (order != null) {
                     synchronized (completedOrdersJournal) {
-                        System.out.println(ProgramsMethods.currentDate() + "Cook " + getName() + " took the order " + order.getOrderNumber());
-                        System.out.println(ProgramsMethods.currentDate() + "Order #" + order.getOrderNumber() + " " + order.getFood() + " " + ProgramsMethods.getPizzaComposition(order.getFood().getIngredients()));
+                        System.out.println(Utils.currentDate() + "Cook " + getName() + " took the order " + order.getOrderNumber());
+                        System.out.println(Utils.currentDate() + "Order #" + order.getOrderNumber() + " " + order.getFood() +
+                                " " + OrderManager.getPizzaComposition(order.getFood().getIngredients()));
                         if (null != completedOrdersJournal.getIncompleteOrder(order.getOrderNumber())) {
-                            System.out.println(ProgramsMethods.currentDate() + "pizza is not cooked according to the recipe, not enough ingredients");
+                            System.out.println(Utils.currentDate() + "pizza is not cooked according to the recipe, not enough ingredients");
                         }
-                        System.out.println(ProgramsMethods.currentDate() + "left in warehouse " + Warehouse.getInstance().getIngredientsInStock());
+                        System.out.println(Utils.currentDate() + "left in warehouse " + Warehouse.getInstance().getIngredientsInStock());
                     }
-                    Thread.sleep(COOKING_TIME * 1000);
+                    Thread.sleep(COOKING_TIME);
                     synchronized (completedOrdersJournal) {
-                        System.out.println(ProgramsMethods.currentDate() + "Order #" + order.getOrderNumber() + " completed, " + order.getFood() + " " + ProgramsMethods.getPizzaComposition(order.getFood().getIngredients()));
+                        System.out.println(Utils.currentDate() + "Order #" + order.getOrderNumber() + " completed, " +
+                                order.getFood() + " " + OrderManager.getPizzaComposition(order.getFood().getIngredients()));
                         if (null != completedOrdersJournal.getIncompleteOrder(order.getOrderNumber())) {
-                            System.out.println(ProgramsMethods.currentDate() + "pizza is not cooked according to the recipe, not enough ingredients");
+                            System.out.println(Utils.currentDate() + "pizza is not cooked according to the recipe, not enough ingredients");
                         }
                     }
                 } else {
-                    Thread.sleep(TIME_TO_RECHECK_QUEUE * 1000);
+                    Thread.sleep(TIME_TO_RECHECK_QUEUE);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
