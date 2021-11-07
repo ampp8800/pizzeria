@@ -3,7 +3,6 @@ package com.ampp8800.pizzeria;
 public class Cook extends Thread {
     private OrderManager orderManager = OrderManager.getInstance();
     private CompletedOrdersJournal completedOrdersJournal = CompletedOrdersJournal.getInstance();
-    private final static int TIME_OF_ORDER_SELECTION = 5 * 1000;
     private final static int MAXIMUM_QUEUE_TIME = 30 * 1000;
     private final static int COOKING_TIME = 10 * 1000;
     private final static int TIME_TO_RECHECK_QUEUE = 10 * 1000;
@@ -13,8 +12,7 @@ public class Cook extends Thread {
     public void run() {
         while ((Utils.getNumberOfOrderGenerators() != 0) || (OrderQueueWrapper.getInstance().getQueueOrder().peekFirst() != null)) {
             try {
-                Thread.sleep(TIME_OF_ORDER_SELECTION);
-                order = orderManager.getAnOrderFromQueue(MAXIMUM_QUEUE_TIME);
+                order = orderManager.getOrderFromQueue(MAXIMUM_QUEUE_TIME);
                 if (order != null) {
                     outputAtStartOfCooking();
                     Thread.sleep(COOKING_TIME);

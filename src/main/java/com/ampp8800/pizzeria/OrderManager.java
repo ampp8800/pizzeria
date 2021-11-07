@@ -16,12 +16,12 @@ public class OrderManager {
         return orderManager;
     }
 
-    public synchronized Order getAnOrderFromQueue(int MAXIMUM_QUEUE_TIME) {
+    public Order getOrderFromQueue(int maximumQueueTime) {
         synchronized (orderQueueWrapper) {
             boolean orderIsAvailableForExecution = false;
             Order order = orderQueueWrapper.getQueueOrder().peekFirst();
             if (order != null) {
-                if (checkIfMaximumWaitingTime(order, MAXIMUM_QUEUE_TIME) || checkIngredientInStock(order)) {
+                if (checkIfMaximumWaitingTime(order, maximumQueueTime) || checkIngredientInStock(order)) {
                     orderIsAvailableForExecution = true;
                 }
                 if (orderIsAvailableForExecution) {
@@ -48,8 +48,8 @@ public class OrderManager {
         return true;
     }
 
-    public boolean checkIfMaximumWaitingTime(Order order, int MAXIMUM_QUEUE_TIME) {
-        return (new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME;
+    public boolean checkIfMaximumWaitingTime(Order order, int maximumQueueTime) {
+        return (new Date().getTime() - order.getDate().getTime()) > maximumQueueTime;
     }
 
     public void pickUpIngredientsFromWarehouse(Order order) {
