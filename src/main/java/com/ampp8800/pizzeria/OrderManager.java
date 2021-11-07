@@ -16,19 +16,20 @@ public class OrderManager {
         return orderManager;
     }
 
-    public synchronized Order takeQueue(int MAXIMUM_QUEUE_TIME) {
+    public synchronized Order getAnOrderFromQueue(int MAXIMUM_QUEUE_TIME) {
         synchronized (orderQueueWrapper) {
+            boolean orderIsAvailableForExecution = false;
             Order order = orderQueueWrapper.getQueueOrder().peekFirst();
-            boolean orderIsAvailableForExecution;
-            if (null != order) {
-                orderIsAvailableForExecution = checkIngredientInStock(order);
-                if ((new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME) {
+            if (order != null) {
+                if (checkIfMaximumWaitingTime(order, MAXIMUM_QUEUE_TIME) || checkIngredientInStock(order)){
                     orderIsAvailableForExecution = true;
                 }
                 if (orderIsAvailableForExecution) {
                     order = orderQueueWrapper.getQueueOrder().removeFirst();
                     pickUpIngredientsFromWarehouse(order);
                     completedOrdersJournal.addNewOrder(order);
+                } else {
+                    order = null;
                 }
             }
             return order;
@@ -47,6 +48,10 @@ public class OrderManager {
         return true;
     }
 
+    public boolean checkIfMaximumWaitingTime(Order order, int MAXIMUM_QUEUE_TIME) {
+        return (new Date().getTime() - order.getDate().getTime()) > MAXIMUM_QUEUE_TIME;
+    }
+
     public void pickUpIngredientsFromWarehouse(Order order) {
         EnumIngredients.Ingredients[] ingredients = order.getFood().getIngredients();
         Map<EnumIngredients.Ingredients, Integer> ingredientInStock = warehouse.getIngredientsInStock();
@@ -57,18 +62,10 @@ public class OrderManager {
             if (ingredientAmount > 0) {
                 ingredientInStock.put(ingredient, --ingredientAmount);
             } else {
-                completedOrdersJournal.notEnoughIngredientInOrder(order, ingredient);
+                completedOrdersJournal.addToQueueWithIncompleteOrders(order, ingredient);
             }
         }
         warehouse.setIngredientsInStock(ingredientInStock);
-    }
-
-    public static String getPizzaComposition(EnumIngredients.Ingredients[] ingredients) {
-        String result = "composition: ";
-        for (EnumIngredients.Ingredients ingredient : ingredients) {
-            result += ingredient + ", ";
-        }
-        return result;
     }
 
 }

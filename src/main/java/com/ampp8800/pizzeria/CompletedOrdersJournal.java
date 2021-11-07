@@ -4,8 +4,8 @@ import java.util.*;
 
 public class CompletedOrdersJournal {
     private static CompletedOrdersJournal completedOrdersJournal;
-    private HashSet<Order> completedOrders = new HashSet<>();
-    private Map<Integer, Queue<EnumIngredients.Ingredients>> incompleteOrders = new HashMap<>();
+    private Set<Order> completedOrders = new HashSet<>();
+    private Map<Integer, HashSet<EnumIngredients.Ingredients>> incompleteOrders = new HashMap<>();
 
     private CompletedOrdersJournal() {
     }
@@ -21,16 +21,19 @@ public class CompletedOrdersJournal {
         completedOrders.add(order);
     }
 
-    public void notEnoughIngredientInOrder(Order order, EnumIngredients.Ingredients ingredient) {
-        Queue<EnumIngredients.Ingredients> queue = new LinkedList<>();
+    public void addToQueueWithIncompleteOrders(Order order, EnumIngredients.Ingredients ingredient) {
+        HashSet<EnumIngredients.Ingredients> ingredientsUsed;
         if (incompleteOrders.containsKey(order.getOrderNumber())) {
-            queue = incompleteOrders.get(order.getOrderNumber());
+            ingredientsUsed = incompleteOrders.get(order.getOrderNumber());
+        } else {
+            ingredientsUsed = new HashSet<>(Arrays.asList(order.getFood().getIngredients()));
         }
-        queue.add(ingredient);
-        incompleteOrders.put(order.getOrderNumber(), queue);
+        ingredientsUsed.remove(ingredient);
+        incompleteOrders.put(order.getOrderNumber(), ingredientsUsed);
     }
 
-    public Queue<EnumIngredients.Ingredients> getIncompleteOrder(Integer orderNumber) {
+    public HashSet<EnumIngredients.Ingredients> getIncompleteOrder(Integer orderNumber) {
         return incompleteOrders.get(orderNumber);
     }
+
 }

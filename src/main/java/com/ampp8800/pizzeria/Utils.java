@@ -20,7 +20,7 @@ public class Utils {
     }
 
     public static void printTotalOrders() {
-        System.out.println(currentDate() + "the pizzeria will fulfill " + OrderQueueWrapper.THE_NUMBER_OF_ORDERS + " orders");
+        System.out.println(currentDate() + "The pizzeria will fulfill " + OrderQueueWrapper.THE_NUMBER_OF_ORDERS + " orders");
     }
 
     public static String currentDate() {
