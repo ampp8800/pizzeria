@@ -16,24 +16,22 @@ public class OrderManager {
         return orderManager;
     }
 
-    public Order getOrderFromQueue(int maximumQueueTime) {
-        synchronized (orderQueueWrapper) {
-            boolean orderIsAvailableForExecution = false;
-            Order order = orderQueueWrapper.getQueueOrder().peekFirst();
-            if (order != null) {
-                if (checkIfMaximumWaitingTime(order, maximumQueueTime) || checkIngredientInStock(order)) {
-                    orderIsAvailableForExecution = true;
-                }
-                if (orderIsAvailableForExecution) {
-                    order = orderQueueWrapper.getQueueOrder().removeFirst();
-                    pickUpIngredientsFromWarehouse(order);
-                    completedOrdersJournal.addNewOrder(order);
-                } else {
-                    order = null;
-                }
+    public synchronized Order getOrderFromQueue(int maximumQueueTime) {
+        boolean orderIsAvailableForExecution = false;
+        Order order = orderQueueWrapper.getQueueOrder().peekFirst();
+        if (order != null) {
+            if (checkIfMaximumWaitingTime(order, maximumQueueTime) || checkIngredientInStock(order)) {
+                orderIsAvailableForExecution = true;
             }
-            return order;
+            if (orderIsAvailableForExecution) {
+                order = orderQueueWrapper.getQueueOrder().removeFirst();
+                pickUpIngredientsFromWarehouse(order);
+                completedOrdersJournal.addNewOrder(order);
+            } else {
+                order = null;
+            }
         }
+        return order;
     }
 
     public boolean checkIngredientInStock(Order order) {
