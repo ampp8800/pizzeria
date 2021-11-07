@@ -1,16 +1,14 @@
 package com.ampp8800.pizzeria;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
 
 public class OrderQueueWrapper {
 
-    public static OrderQueueWrapper orderQueueWrapper;
+    private static OrderQueueWrapper orderQueueWrapper;
     private Deque<Order> queueOrder = new LinkedList<>();
     final static int THE_NUMBER_OF_ORDERS = 11;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("[dd/MM/yyyy HH:mm:ss] ");
+
 
     private OrderQueueWrapper() {
     }
@@ -22,8 +20,8 @@ public class OrderQueueWrapper {
         return orderQueueWrapper;
     }
 
-    public void printTotalOrders() {
-        System.out.println(currentDate() + "the pizzeria will fulfill " + THE_NUMBER_OF_ORDERS + " orders");
+    public Deque<Order> getQueueOrder() {
+        return queueOrder;
     }
 
     public void addNewOrder(Order order) {
@@ -33,13 +31,8 @@ public class OrderQueueWrapper {
 
 
     public void printOrder(Order order) {
-        System.out.println(currentDate() + "Order #" + order.getOrderNumber() + " " + order.getFood() + " " + order.getDate());
-        System.out.println(currentDate() + "Orders in the queue " + queueOrder);
-    }
-
-    public String currentDate() {
-        Date date = new Date();
-        return dateFormat.format(date);
+        System.out.println(Utils.currentDate() + "Add order #" + order.getOrderNumber() + " " + order.getFood() + " " + order.getDate());
+        System.out.println(Utils.currentDate() + "Orders in the queue " + queueOrder);
     }
 
 }

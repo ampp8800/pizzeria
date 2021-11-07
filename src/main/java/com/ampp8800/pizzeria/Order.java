@@ -26,6 +26,14 @@ public class Order {
         return orderNumber;
     }
 
+    public static String getPizzaComposition(EnumIngredients.Ingredients[] ingredients) {
+        String result = "Composition: ";
+        for (EnumIngredients.Ingredients ingredient : ingredients) {
+            result += ingredient + ", ";
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(orderNumber);
