@@ -37,7 +37,7 @@ public class Cook extends Thread {
                     Warehouse.getInstance().getIngredientsInStock());
         } else {
             System.out.println(Utils.currentDate() + "Cook " + getName() + " took the order #" + order.getOrderNumber() +
-                    ", " + order.getFood() + ". " + Order.getPizzaComposition(order.getFood().getIngredients())+
+                    ", " + order.getFood() + ". " + Order.getPizzaComposition(order.getFood().getIngredients()) +
                     "Left in warehouse " + Warehouse.getInstance().getIngredientsInStock());
         }
 

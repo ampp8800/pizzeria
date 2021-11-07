@@ -21,7 +21,7 @@ public class OrderManager {
             boolean orderIsAvailableForExecution = false;
             Order order = orderQueueWrapper.getQueueOrder().peekFirst();
             if (order != null) {
-                if (checkIfMaximumWaitingTime(order, MAXIMUM_QUEUE_TIME) || checkIngredientInStock(order)){
+                if (checkIfMaximumWaitingTime(order, MAXIMUM_QUEUE_TIME) || checkIngredientInStock(order)) {
                     orderIsAvailableForExecution = true;
                 }
                 if (orderIsAvailableForExecution) {
