@@ -14,6 +14,10 @@ public class Order {
         this.date = new Date();
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Food.Pizza getFood() {
         return food;
     }

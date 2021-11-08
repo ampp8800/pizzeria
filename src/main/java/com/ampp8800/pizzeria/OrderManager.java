@@ -26,6 +26,7 @@ public class OrderManager {
             if (orderIsAvailableForExecution) {
                 order = orderQueueWrapper.getQueueOrder().removeFirst();
                 pickUpIngredientsFromWarehouse(order);
+                order.setDate(new Date(new Date().getTime() - order.getDate().getTime()));
                 completedOrdersJournal.addNewOrder(order);
             } else {
                 order = null;

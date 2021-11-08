@@ -17,6 +17,18 @@ public class CompletedOrdersJournal {
         return completedOrdersJournal;
     }
 
+    public Map<Integer, HashSet<EnumIngredients.Ingredients>> getIncompleteOrders() {
+        return incompleteOrders;
+    }
+
+    public HashSet<EnumIngredients.Ingredients> getIncompleteOrder(Integer orderNumber) {
+        return incompleteOrders.get(orderNumber);
+    }
+
+    public Set<Order> getCompletedOrders() {
+        return completedOrders;
+    }
+
     public void addNewOrder(Order order) {
         completedOrders.add(order);
     }
@@ -32,8 +44,6 @@ public class CompletedOrdersJournal {
         incompleteOrders.put(order.getOrderNumber(), ingredientsUsed);
     }
 
-    public HashSet<EnumIngredients.Ingredients> getIncompleteOrder(Integer orderNumber) {
-        return incompleteOrders.get(orderNumber);
-    }
+
 
 }
