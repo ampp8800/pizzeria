@@ -7,6 +7,7 @@ public class Order {
     private int orderNumber;
     private Food.Pizza food;
     private Date date;
+    private int timeInQueue;
 
     public Order(int orderNumber, Food.Pizza food) {
         this.orderNumber = orderNumber;
@@ -14,8 +15,12 @@ public class Order {
         this.date = new Date();
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimeInQueue(int timeInQueue) {
+        this.timeInQueue = timeInQueue;
+    }
+
+    public int getTimeInQueue() {
+        return timeInQueue;
     }
 
     public Food.Pizza getFood() {

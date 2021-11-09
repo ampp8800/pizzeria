@@ -7,22 +7,37 @@ import java.util.Map;
 
 public class Utils {
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("[dd/MM/yyyy HH:mm:ss] ");
+    final static int THE_NUMBER_OF_ORDERS = 11;
     private static int numberOfOrderGenerators = 0;
+    private static int numberOfCooks = 0;
+
 
     public static int getNumberOfOrderGenerators() {
         return numberOfOrderGenerators;
     }
 
+    public static int getNumberOfCooks() {
+        return numberOfCooks;
+    }
+
     public static void addedOrderGenerator() {
-        ++Utils.numberOfOrderGenerators;
+        ++numberOfOrderGenerators;
+    }
+
+    public static void addNumberOfCooks() {
+        ++numberOfCooks;
     }
 
     public static void generationOfOrdersCompleted() {
-        --Utils.numberOfOrderGenerators;
+        --numberOfOrderGenerators;
+    }
+
+    public static void numberOfCooksCompleted() {
+        --numberOfCooks;
     }
 
     public static void printTotalOrders() {
-        System.out.println(currentDate() + "The pizzeria will fulfill " + OrderQueueWrapper.THE_NUMBER_OF_ORDERS + " orders");
+        System.out.println(currentDate() + "The pizzeria will fulfill " + THE_NUMBER_OF_ORDERS + " orders");
     }
 
     public static String currentDate() {
@@ -34,7 +49,7 @@ public class Utils {
         String result = currentDate();
         Order longestOrder = searchForLongestOrder();
         result += "Average order waiting time " + searchForAverageOrderWaitingTime() + " seconds, ";
-        result += "longest order #" + longestOrder.getOrderNumber() + " be in progress " + (longestOrder.getDate().getTime() / 1000) + " seconds, ";
+        result += "longest order #" + longestOrder.getOrderNumber() + " be in progress " + longestOrder.getTimeInQueue() + " seconds, ";
         result += "percentage of incomplete orders " + (int) (findingPercentageOfIncompleteOrders() * 100) + "%";
         return result;
     }
@@ -43,10 +58,9 @@ public class Utils {
         CompletedOrdersJournal completedOrders = CompletedOrdersJournal.getInstance();
         double averageOrderWaitingTime = 0.0;
         for(Order order : completedOrders.getCompletedOrders()) {
-            int waitingTimeForOrder = (int) (order.getDate().getTime() / 1000);
-            averageOrderWaitingTime += waitingTimeForOrder;
+            averageOrderWaitingTime += order.getTimeInQueue();
         }
-        averageOrderWaitingTime /= OrderQueueWrapper.THE_NUMBER_OF_ORDERS;
+        averageOrderWaitingTime /= THE_NUMBER_OF_ORDERS;
         averageOrderWaitingTime = (double) Math.round(averageOrderWaitingTime * 100) / 100;
         return averageOrderWaitingTime;
     }
@@ -57,7 +71,7 @@ public class Utils {
         for(Order order : completedOrders.getCompletedOrders()) {
             if (longestOrder == null) {
                 longestOrder = order;
-            }else if (longestOrder.getDate().getTime() < order.getDate().getTime()) {
+            }else if (longestOrder.getTimeInQueue() < order.getTimeInQueue()) {
                 longestOrder = order;
             }
         }
@@ -73,7 +87,7 @@ public class Utils {
                 percentageOfIncompleteOrders++;
             }
         }
-        percentageOfIncompleteOrders /= OrderQueueWrapper.THE_NUMBER_OF_ORDERS;
+        percentageOfIncompleteOrders /= THE_NUMBER_OF_ORDERS;
         percentageOfIncompleteOrders = (double) Math.round(percentageOfIncompleteOrders * 100) / 100;
         return percentageOfIncompleteOrders;
     }

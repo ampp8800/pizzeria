@@ -10,7 +10,7 @@ public class OrderGenerator extends Thread {
     public void run() {
         Utils.addedOrderGenerator();
         OrderQueueWrapper orderQueueWrapper = OrderQueueWrapper.getInstance();
-        while (ordersInProcessOfGeneration.getAndIncrement() < OrderQueueWrapper.THE_NUMBER_OF_ORDERS) {
+        while (ordersInProcessOfGeneration.getAndIncrement() < Utils.THE_NUMBER_OF_ORDERS) {
             try {
                 orderQueueWrapper.addNewOrder(generationOfOrders());
             } catch (InterruptedException e) {

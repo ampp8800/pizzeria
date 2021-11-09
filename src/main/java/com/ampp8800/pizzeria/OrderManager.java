@@ -26,7 +26,7 @@ public class OrderManager {
             if (orderIsAvailableForExecution) {
                 order = orderQueueWrapper.getQueueOrder().removeFirst();
                 pickUpIngredientsFromWarehouse(order);
-                order.setDate(new Date(new Date().getTime() - order.getDate().getTime()));
+                order.setTimeInQueue((int)(new Date().getTime() - order.getDate().getTime()) / 1000);
                 completedOrdersJournal.addNewOrder(order);
             } else {
                 order = null;
@@ -59,12 +59,11 @@ public class OrderManager {
         for (EnumIngredients.Ingredients ingredient : ingredients) {
             ingredientAmount = ingredientInStock.get(ingredient);
             if (ingredientAmount > 0) {
-                ingredientInStock.put(ingredient, --ingredientAmount);
+                warehouse.changeInNumberOfIngredientsInWarehouse(ingredient, false, 1);
             } else {
                 completedOrdersJournal.addToQueueWithIncompleteOrders(order, ingredient);
             }
         }
-        warehouse.setIngredientsInStock(ingredientInStock);
     }
 
 }

@@ -1,9 +1,12 @@
 package com.ampp8800.pizzeria;
 
+import java.util.ArrayList;
+
 public class Pizzeria {
     final static int NUMBER_OF_COOKS = 3;
 
     public static void main(String[] args) {
+        ArrayList<Cook> cooks = new ArrayList<>();
         String outputResult;
         Utils.printTotalOrders();
 
@@ -13,14 +16,19 @@ public class Pizzeria {
         OrderGenerator orderGenerator = new OrderGenerator();
         orderGenerator.start();
 
-        Supplier supplier = new Supplier();
-        supplier.start();
-
         for (int i = 0; i < NUMBER_OF_COOKS; i++) {
             Cook cook = new Cook();
             cook.start();
+            cooks.add(cook);
         }
+
+        Supplier supplier = new Supplier();
+        supplier.start();
+
         try {
+            for (int i = 0; i < cooks.size(); i++) {
+                cooks.get(i).join();
+            }
             supplier.join();
             outputResult = Utils.outputAtEndOfWork();
             System.out.println(outputResult);

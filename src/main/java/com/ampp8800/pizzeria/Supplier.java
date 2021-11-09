@@ -10,7 +10,7 @@ public class Supplier extends Thread {
 
     @Override
     public void run() {
-        while ((Utils.getNumberOfOrderGenerators() != 0) || (OrderQueueWrapper.getInstance().getQueueOrder().peekFirst() != null)) {
+        while (Utils.getNumberOfCooks() != 0) {
             try {
                 Thread.sleep(TIME_OF_SUPPLIER_VERIFICATION_PERIOD);
                 checkIngredientsAndAddMissingOnes();
@@ -21,14 +21,11 @@ public class Supplier extends Thread {
     }
 
     private synchronized void checkIngredientsAndAddMissingOnes() {
-        Map<EnumIngredients.Ingredients, Integer> ingredientsInStock = warehouse.getIngredientsInStock();
         for(Map.Entry<EnumIngredients.Ingredients, Integer> entry : warehouse.getIngredientsInStock().entrySet()) {
             Integer ingredientValue = entry.getValue();
             if (ingredientValue < MINIMUM_INGREDIENT_AMOUNT) {
                 EnumIngredients.Ingredients ingredient = entry.getKey();
-                ingredientValue += AMOUNT_OF_INGREDIENTS_TO_REPLENISH;
-                ingredientsInStock.put(ingredient, ingredientValue);
-                warehouse.setIngredientsInStock(ingredientsInStock);
+                warehouse.changeInNumberOfIngredientsInWarehouse(ingredient, true, AMOUNT_OF_INGREDIENTS_TO_REPLENISH);
                 System.out.println(Utils.currentDate() + "Added to the warehouse " + AMOUNT_OF_INGREDIENTS_TO_REPLENISH + " " + ingredient);
             }
         }
