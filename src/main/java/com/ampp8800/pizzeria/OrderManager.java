@@ -26,7 +26,7 @@ public class OrderManager {
             if (orderIsAvailableForExecution) {
                 order = orderQueueWrapper.getQueueOrder().removeFirst();
                 pickUpIngredientsFromWarehouse(order);
-                order.setTimeInQueue((int)(new Date().getTime() - order.getDate().getTime()) / 1000);
+                order.setTimeInQueueInSeconds((int)(new Date().getTime() - order.getDate().getTime()) / 1000);
                 completedOrdersJournal.addNewOrder(order);
             } else {
                 order = null;

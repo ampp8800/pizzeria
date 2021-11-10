@@ -7,7 +7,7 @@ public class Order {
     private int orderNumber;
     private Food.Pizza food;
     private Date date;
-    private int timeInQueue;
+    private int timeInQueueInSeconds;
 
     public Order(int orderNumber, Food.Pizza food) {
         this.orderNumber = orderNumber;
@@ -15,12 +15,12 @@ public class Order {
         this.date = new Date();
     }
 
-    public void setTimeInQueue(int timeInQueue) {
-        this.timeInQueue = timeInQueue;
+    public void setTimeInQueueInSeconds(int timeInQueueInSeconds) {
+        this.timeInQueueInSeconds = timeInQueueInSeconds;
     }
 
-    public int getTimeInQueue() {
-        return timeInQueue;
+    public int getTimeInQueueInSeconds() {
+        return timeInQueueInSeconds;
     }
 
     public Food.Pizza getFood() {

@@ -1,12 +1,13 @@
 package com.ampp8800.pizzeria;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pizzeria {
     final static int NUMBER_OF_COOKS = 3;
 
     public static void main(String[] args) {
-        ArrayList<Cook> cooks = new ArrayList<>();
+        List<Cook> cooks = new ArrayList<>();
         String outputResult;
         Utils.printTotalOrders();
 

@@ -4,36 +4,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Utils {
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("[dd/MM/yyyy HH:mm:ss] ");
     final static int THE_NUMBER_OF_ORDERS = 11;
-    private static int numberOfOrderGenerators = 0;
-    private static int numberOfCooks = 0;
+    private static AtomicInteger numberOfOrderGenerators = new AtomicInteger();
+    private static AtomicInteger numberOfCooks = new AtomicInteger();
 
 
     public static int getNumberOfOrderGenerators() {
-        return numberOfOrderGenerators;
+        return numberOfOrderGenerators.get();
     }
 
     public static int getNumberOfCooks() {
-        return numberOfCooks;
+        return numberOfCooks.get();
     }
 
-    public static void addedOrderGenerator() {
-        ++numberOfOrderGenerators;
+    public static void incrementNumberOfOrderGenerators() {
+        numberOfOrderGenerators.getAndIncrement();
     }
 
-    public static void addNumberOfCooks() {
-        ++numberOfCooks;
+    public static void incrementNumberOfCooks() {
+        numberOfCooks.getAndIncrement();
     }
 
-    public static void generationOfOrdersCompleted() {
-        --numberOfOrderGenerators;
+    public static void decrementNumberOfOrderGenerators() {
+        numberOfOrderGenerators.getAndDecrement();
     }
 
     public static void numberOfCooksCompleted() {
-        --numberOfCooks;
+        numberOfCooks.getAndDecrement();
     }
 
     public static void printTotalOrders() {
@@ -49,7 +50,7 @@ public class Utils {
         String result = currentDate();
         Order longestOrder = searchForLongestOrder();
         result += "Average order waiting time " + searchForAverageOrderWaitingTime() + " seconds, ";
-        result += "longest order #" + longestOrder.getOrderNumber() + " be in progress " + longestOrder.getTimeInQueue() + " seconds, ";
+        result += "longest order #" + longestOrder.getOrderNumber() + " be in progress " + longestOrder.getTimeInQueueInSeconds() + " seconds, ";
         result += "percentage of incomplete orders " + (int) (findingPercentageOfIncompleteOrders() * 100) + "%";
         return result;
     }
@@ -58,7 +59,7 @@ public class Utils {
         CompletedOrdersJournal completedOrders = CompletedOrdersJournal.getInstance();
         double averageOrderWaitingTime = 0.0;
         for(Order order : completedOrders.getCompletedOrders()) {
-            averageOrderWaitingTime += order.getTimeInQueue();
+            averageOrderWaitingTime += order.getTimeInQueueInSeconds();
         }
         averageOrderWaitingTime /= THE_NUMBER_OF_ORDERS;
         averageOrderWaitingTime = (double) Math.round(averageOrderWaitingTime * 100) / 100;
@@ -71,7 +72,7 @@ public class Utils {
         for(Order order : completedOrders.getCompletedOrders()) {
             if (longestOrder == null) {
                 longestOrder = order;
-            }else if (longestOrder.getTimeInQueue() < order.getTimeInQueue()) {
+            }else if (longestOrder.getTimeInQueueInSeconds() < order.getTimeInQueueInSeconds()) {
                 longestOrder = order;
             }
         }

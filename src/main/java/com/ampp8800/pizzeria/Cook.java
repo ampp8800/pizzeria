@@ -10,7 +10,7 @@ public class Cook extends Thread {
 
     @Override
     public void run() {
-        Utils.addNumberOfCooks();
+        Utils.incrementNumberOfCooks();
         while ((Utils.getNumberOfOrderGenerators() != 0) || (OrderQueueWrapper.getInstance().getQueueOrder().peekFirst() != null)) {
             try {
                 order = orderManager.getOrderFromQueue(MAXIMUM_QUEUE_TIME);
