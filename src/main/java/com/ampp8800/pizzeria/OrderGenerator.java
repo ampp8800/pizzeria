@@ -8,16 +8,16 @@ public class OrderGenerator extends Thread {
 
     @Override
     public void run() {
-        Utils.addedOrderGenerator();
+        Utils.incrementNumberOfOrderGenerators();
         OrderQueueWrapper orderQueueWrapper = OrderQueueWrapper.getInstance();
-        while (ordersInProcessOfGeneration.getAndIncrement() < OrderQueueWrapper.THE_NUMBER_OF_ORDERS) {
+        while (ordersInProcessOfGeneration.getAndIncrement() < Utils.THE_NUMBER_OF_ORDERS) {
             try {
                 orderQueueWrapper.addNewOrder(generationOfOrders());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Utils.generationOfOrdersCompleted();
+        Utils.decrementNumberOfOrderGenerators();
     }
 
     private Order generationOfOrders() throws InterruptedException {

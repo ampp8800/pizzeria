@@ -7,11 +7,20 @@ public class Order {
     private int orderNumber;
     private Food.Pizza food;
     private Date date;
+    private int timeInQueueInSeconds;
 
     public Order(int orderNumber, Food.Pizza food) {
         this.orderNumber = orderNumber;
         this.food = food;
         this.date = new Date();
+    }
+
+    public void setTimeInQueueInSeconds(int timeInQueueInSeconds) {
+        this.timeInQueueInSeconds = timeInQueueInSeconds;
+    }
+
+    public int getTimeInQueueInSeconds() {
+        return timeInQueueInSeconds;
     }
 
     public Food.Pizza getFood() {

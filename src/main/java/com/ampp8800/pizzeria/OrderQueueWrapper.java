@@ -7,8 +7,6 @@ public class OrderQueueWrapper {
 
     private static OrderQueueWrapper orderQueueWrapper;
     private Deque<Order> queueOrder = new LinkedList<>();
-    final static int THE_NUMBER_OF_ORDERS = 11;
-
 
     private OrderQueueWrapper() {
     }

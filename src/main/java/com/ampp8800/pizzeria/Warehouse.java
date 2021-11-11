@@ -21,18 +21,22 @@ public class Warehouse {
         return ingredientsInStock;
     }
 
-    public void setIngredientsInStock(Map<EnumIngredients.Ingredients, Integer> ingredientsInStock) {
-        this.ingredientsInStock = ingredientsInStock;
-    }
-
     public void fillWithIngredients() {
-        ingredientsInStock.put(EnumIngredients.Ingredients.CHEESE, 10);
-        ingredientsInStock.put(EnumIngredients.Ingredients.HAM, 10);
-        ingredientsInStock.put(EnumIngredients.Ingredients.DOUGH, 10);
-        ingredientsInStock.put(EnumIngredients.Ingredients.MUSHROOM, 10);
-        ingredientsInStock.put(EnumIngredients.Ingredients.SAUSAGE, 10);
-        ingredientsInStock.put(EnumIngredients.Ingredients.TOMATO, 10);
+        ingredientsInStock.put(EnumIngredients.Ingredients.CHEESE, 5);
+        ingredientsInStock.put(EnumIngredients.Ingredients.HAM, 5);
+        ingredientsInStock.put(EnumIngredients.Ingredients.DOUGH, 5);
+        ingredientsInStock.put(EnumIngredients.Ingredients.MUSHROOM, 5);
+        ingredientsInStock.put(EnumIngredients.Ingredients.SAUSAGE, 5);
+        ingredientsInStock.put(EnumIngredients.Ingredients.TOMATO, 5);
     }
 
-
+    public synchronized void changeInNumberOfIngredientsInWarehouse(EnumIngredients.Ingredients ingredient, boolean addition, int value) {
+        if (addition) {
+            int valueIngredient = ingredientsInStock.get(ingredient) + value;
+            ingredientsInStock.put(ingredient, valueIngredient);
+        } else {
+            int valueIngredient = ingredientsInStock.get(ingredient) - value;
+            ingredientsInStock.put(ingredient, valueIngredient);
+        }
+    }
 }
